@@ -1,0 +1,304 @@
+{
+  "title": "Layered Portal Wallpaper",
+  "description": "网页壁纸：罗生门/森罗门 + 鼠标十字特效",
+  "file": "index.html",
+  "preview": "",
+  "contentrating": "Everyone",
+  "type": "web",
+  "version": 1,
+  "general": {
+    "properties": {
+      "bg_media": {
+        "order": 10,
+        "text": "背景媒体路径 (webm/png/jpg/gif)",
+        "type": "text",
+        "value": ""
+      },
+
+      "effect_mode": {
+        "order": 20,
+        "text": "主特效模式 (none/luosheng/senluo)",
+        "type": "combo",
+        "value": "luosheng",
+        "options": [
+          { "label": "不启用", "value": "none" },
+          { "label": "罗生门", "value": "luosheng" },
+          { "label": "森罗门", "value": "senluo" }
+        ]
+      },
+
+      "rm_images": {
+        "order": 30,
+        "text": "罗生门图片列表 (用逗号/分号/换行分隔)",
+        "type": "text",
+        "value": ""
+      },
+      "rm_pos_x": {
+        "order": 31,
+        "text": "罗生门X位置 (%)",
+        "type": "slider",
+        "min": 0,
+        "max": 100,
+        "step": 1,
+        "value": 50
+      },
+      "rm_pos_y": {
+        "order": 32,
+        "text": "罗生门Y位置 (%)",
+        "type": "slider",
+        "min": 0,
+        "max": 100,
+        "step": 1,
+        "value": 50
+      },
+      "rm_size": {
+        "order": 33,
+        "text": "罗生门尺寸 (%)",
+        "type": "slider",
+        "min": 5,
+        "max": 100,
+        "step": 1,
+        "value": 38
+      },
+      "rm_frame_color": {
+        "order": 34,
+        "text": "罗生门边框颜色",
+        "type": "color",
+        "value": "1 0.82 0.67"
+      },
+      "rm_thickness": {
+        "order": 35,
+        "text": "罗生门边框厚度",
+        "type": "slider",
+        "min": 1,
+        "max": 30,
+        "step": 1,
+        "value": 5
+      },
+      "rm_rotate_speed": {
+        "order": 36,
+        "text": "罗生门旋转速度 (deg/s)",
+        "type": "slider",
+        "min": -360,
+        "max": 360,
+        "step": 1,
+        "value": 36
+      },
+      "rm_tilt": {
+        "order": 37,
+        "text": "罗生门初始倾斜角度",
+        "type": "slider",
+        "min": -180,
+        "max": 180,
+        "step": 1,
+        "value": 20
+      },
+      "rm_dynamic": {
+        "order": 38,
+        "text": "罗生门动态缩放",
+        "type": "bool",
+        "value": false
+      },
+      "rm_dynamic_range": {
+        "order": 39,
+        "text": "罗生门浮动范围 (%)",
+        "type": "slider",
+        "min": 0,
+        "max": 40,
+        "step": 1,
+        "value": 10
+      },
+      "rm_dynamic_speed": {
+        "order": 40,
+        "text": "罗生门浮动速度 (Hz)",
+        "type": "slider",
+        "min": 0,
+        "max": 8,
+        "step": 0.1,
+        "value": 0.5
+      },
+      "rm_preload_protect": {
+        "order": 41,
+        "text": "罗生门预加载进度保护",
+        "type": "bool",
+        "value": true
+      },
+      "rm_preload_ahead": {
+        "order": 42,
+        "text": "罗生门预加载前瞻数量",
+        "type": "slider",
+        "min": 1,
+        "max": 6,
+        "step": 1,
+        "value": 2
+      },
+      "rm_trail_enable": {
+        "order": 43,
+        "text": "罗生门方框残影特效",
+        "type": "bool",
+        "value": true
+      },
+      "rm_trail_strength": {
+        "order": 44,
+        "text": "罗生门残影强度",
+        "type": "slider",
+        "min": 0,
+        "max": 1,
+        "step": 0.01,
+        "value": 0.58
+      },
+      "rm_trail_lag": {
+        "order": 45,
+        "text": "罗生门残影滞后",
+        "type": "slider",
+        "min": 0.04,
+        "max": 0.6,
+        "step": 0.01,
+        "value": 0.16
+      },
+
+      "sl_images": {
+        "order": 50,
+        "text": "森罗门层级图片列表 (第一层,第二层...)",
+        "type": "text",
+        "value": ""
+      },
+      "sl_max_layers": {
+        "order": 51,
+        "text": "森罗门最大层数",
+        "type": "slider",
+        "min": 1,
+        "max": 10,
+        "step": 1,
+        "value": 3
+      },
+      "sl_transition_ms": {
+        "order": 52,
+        "text": "森罗门过渡时长 (ms)",
+        "type": "slider",
+        "min": 120,
+        "max": 2000,
+        "step": 10,
+        "value": 540
+      },
+      "sl_reset": {
+        "order": 53,
+        "text": "森罗门重置到第一层",
+        "type": "bool",
+        "value": false
+      },
+
+      "cross_enable": {
+        "order": 60,
+        "text": "启用鼠标坐标十字线",
+        "type": "bool",
+        "value": true
+      },
+      "cross_hide_cursor": {
+        "order": 60.5,
+        "text": "隐藏系统鼠标（提升跟手体感）",
+        "type": "bool",
+        "value": true
+      },
+      "cross_style": {
+        "order": 61,
+        "text": "十字线样式",
+        "type": "combo",
+        "value": "solid",
+        "options": [
+          { "label": "实线", "value": "solid" },
+          { "label": "虚线", "value": "dashed" },
+          { "label": "点线", "value": "dotted" }
+        ]
+      },
+      "cross_width": {
+        "order": 62,
+        "text": "十字线宽度",
+        "type": "slider",
+        "min": 1,
+        "max": 14,
+        "step": 1,
+        "value": 2
+      },
+      "cross_color": {
+        "order": 63,
+        "text": "十字线颜色",
+        "type": "color",
+        "value": "1 0.98 0.94"
+      },
+      "cross_angle": {
+        "order": 64,
+        "text": "十字线基础倾斜角度",
+        "type": "slider",
+        "min": -180,
+        "max": 180,
+        "step": 1,
+        "value": 0
+      },
+
+      "cross_blink_enable": {
+        "order": 70,
+        "text": "启用十字线闪烁",
+        "type": "bool",
+        "value": false
+      },
+      "cross_blink_type": {
+        "order": 71,
+        "text": "闪烁类型",
+        "type": "combo",
+        "value": "pulse",
+        "options": [
+          { "label": "脉冲闪烁", "value": "pulse" },
+          { "label": "频闪", "value": "strobe" },
+          { "label": "呼吸", "value": "breathe" },
+          { "label": "彩虹", "value": "rainbow" },
+          { "label": "流星", "value": "meteor" }
+        ]
+      },
+      "cross_blink_speed": {
+        "order": 72,
+        "text": "闪烁速度",
+        "type": "slider",
+        "min": 0.1,
+        "max": 12,
+        "step": 0.1,
+        "value": 1
+      },
+      "cross_blink_strength": {
+        "order": 73,
+        "text": "闪烁强度",
+        "type": "slider",
+        "min": 0.1,
+        "max": 1,
+        "step": 0.01,
+        "value": 0.85
+      },
+
+      "cross_rotate_enable": {
+        "order": 80,
+        "text": "启用十字线旋转",
+        "type": "bool",
+        "value": false
+      },
+      "cross_rotate_speed": {
+        "order": 81,
+        "text": "十字线旋转速度 (deg/s)",
+        "type": "slider",
+        "min": 0,
+        "max": 720,
+        "step": 1,
+        "value": 25
+      },
+      "cross_rotate_direction": {
+        "order": 82,
+        "text": "十字线旋转方向",
+        "type": "combo",
+        "value": "cw",
+        "options": [
+          { "label": "顺时针", "value": "cw" },
+          { "label": "逆时针", "value": "ccw" }
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Wallpaper Engine - Layered FX</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div id="app">
+    <div id="backgroundHost" aria-hidden="true">
+      <img id="bgImage" alt="background" draggable="false" />
+      <video id="bgVideo" autoplay muted loop playsinline preload="auto"></video>
+      <div id="bgOverlay"></div>
+    </div>
+
+    <div id="effectLayer" aria-hidden="true">
+      <div id="luoshengmen" class="effect hidden">
+        <div id="rmRoot">
+          <div id="rmRotor">
+            <div id="rmClip">
+              <img id="rmImageA" class="rm-media is-active" alt="rotation media A" draggable="false" />
+              <img id="rmImageB" class="rm-media" alt="rotation media B" draggable="false" />
+            </div>
+            <div id="rmTrailA" class="rm-trail"></div>
+            <div id="rmTrailB" class="rm-trail"></div>
+            <div id="rmFrame"></div>
+          </div>
+        </div>
+      </div>
+
+      <div id="senluomen" class="effect hidden">
+        <div id="slStage"></div>
+      </div>
+    </div>
+
+    <div id="crosshair" class="hidden" aria-hidden="true">
+      <div id="crossInner" data-line-style="solid" data-blink="none">
+        <div class="line line-h"></div>
+        <div class="line line-v"></div>
+      </div>
+    </div>
+
+    <div id="hud" aria-hidden="true">
+      <div class="hud-chip" id="hudMode">Mode: None</div>
+      <div class="hud-chip" id="hudLayer">Layer: 1</div>
+    </div>
+  </div>
+
+  <script src="app.js" defer></script>
+</body>
+</html>
