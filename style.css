@@ -343,7 +343,7 @@ body.cursor-hidden * {
   left: 20px;
   bottom: 20px;
   z-index: 40;
-  display: flex;
+  display: none;
   gap: 10px;
   pointer-events: none;
 }

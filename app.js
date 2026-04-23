@@ -2,9 +2,15 @@
   'use strict';
 
   const MAX_LAYERS_HARD_LIMIT = 10;
+  const RM_FILE_SLOT_COUNT = 10;
+  const SL_FILE_SLOT_COUNT = 10;
 
   const state = {
     bgSrc: '',
+    bgManual: 'touxiang.jpg',
+    bgImageFile: '',
+    bgVideoFile: '',
+    bgFitMode: 'contain',
     mode: 'luosheng',
 
     rm: {
@@ -23,13 +29,19 @@
       trailEnabled: true,
       trailStrength: 0.58,
       trailLag: 0.16,
-      images: [],
+      fitMode: 'contain',
+      textImages: ['gaka.webp'],
+      fileSlots: Array(RM_FILE_SLOT_COUNT).fill(''),
+      images: ['gaka.webp'],
       currentImageIndex: 0,
     },
 
     sl: {
       maxLayers: 3,
       transitionMs: 540,
+      fitMode: 'contain',
+      textImages: [],
+      fileSlots: Array(SL_FILE_SLOT_COUNT).fill(''),
       images: [],
       currentLayer: 1,
     },
@@ -137,6 +149,28 @@
     return 'none';
   }
 
+  function normalizeFitMode(raw) {
+    const v = String(raw || 'default').toLowerCase();
+    if (v === 'fill' || v === 'cover' || v === '1' || v === 'tianchong') return 'fill';
+    if (v === 'contain' || v === 'fit' || v === '2' || v === 'shiying') return 'contain';
+    if (v === 'stretch' || v === '3' || v === 'lashen') return 'stretch';
+    return 'default';
+  }
+
+  function fitModeToObjectFit(mode) {
+    if (mode === 'fill') return 'cover';
+    if (mode === 'contain') return 'contain';
+    if (mode === 'stretch') return 'fill';
+    return '';
+  }
+
+  function fitModeToBackgroundSize(mode) {
+    if (mode === 'fill') return 'cover';
+    if (mode === 'contain') return 'contain';
+    if (mode === 'stretch') return '100% 100%';
+    return '';
+  }
+
   function parseColor(value, fallback = '#ffffff') {
     if (!value) return fallback;
     if (Array.isArray(value) && value.length >= 3) {
@@ -177,11 +211,35 @@
 
   function normalizeMediaPath(src) {
     if (!src) return '';
-    return String(src).trim().replace(/\\/g, '/');
+    const raw = String(src).trim();
+    if (!raw) return '';
+
+    const text = raw.replace(/\\/g, '/');
+    if (/^(file|https?|data):/i.test(text)) return text;
+    if (/^[a-z]:\//i.test(text)) return `file:///${text}`;
+    if (text.startsWith('/')) return `file://${text}`;
+
+    return text;
   }
 
   function isVideo(src) {
     return /\.(webm|mp4|m4v|mov|avi|mkv)(\?.*)?$/i.test(src);
+  }
+
+  function rebuildRmSourceList() {
+    const fileList = state.rm.fileSlots.map(normalizeMediaPath).filter(Boolean);
+    state.rm.images = fileList.length ? fileList : state.rm.textImages.slice();
+  }
+
+  function rebuildSlSourceList() {
+    const fileList = state.sl.fileSlots.map(normalizeMediaPath).filter(Boolean);
+    state.sl.images = fileList.length ? fileList : state.sl.textImages.slice();
+  }
+
+  function resolveBackgroundSource() {
+    if (state.bgVideoFile) return state.bgVideoFile;
+    if (state.bgImageFile) return state.bgImageFile;
+    return state.bgManual;
   }
 
   function setBackground(src) {
@@ -217,6 +275,12 @@
       dom.bgImage.setAttribute('src', media);
       dom.bgImage.style.opacity = '1';
     }
+  }
+
+  function applyBackgroundFitMode() {
+    const fit = fitModeToObjectFit(state.bgFitMode);
+    dom.bgImage.style.objectFit = fit;
+    dom.bgVideo.style.objectFit = fit;
   }
 
   function applyModeVisibility() {
@@ -383,6 +447,10 @@
 
     dom.rmFrame.style.borderColor = parseColor(state.rm.frameColor, '#ffd1ac');
     dom.rmFrame.style.borderWidth = `${clamp(state.rm.thickness, 1, 30)}px`;
+
+    const fit = fitModeToObjectFit(state.rm.fitMode);
+    dom.rmImageA.style.objectFit = fit;
+    dom.rmImageB.style.objectFit = fit;
   }
 
   function syncCrosshairStatics() {
@@ -493,6 +561,7 @@
         } else {
           el.style.backgroundImage = 'none';
         }
+        el.style.backgroundSize = fitModeToBackgroundSize(state.sl.fitMode);
         el.style.transitionDuration = `${clamp(state.sl.transitionMs, 120, 2000)}ms`;
       });
 
@@ -548,8 +617,29 @@
   function applyPropertyBatch(props) {
     const p = (name) => readProp(props[name]);
 
+    let bgChanged = false;
+    let rmSourceChanged = false;
+    let slSourceChanged = false;
+
     if (props.bg_media !== undefined) {
-      setBackground(p('bg_media'));
+      state.bgManual = normalizeMediaPath(p('bg_media'));
+      bgChanged = true;
+    }
+    if (props.bg_image_file !== undefined) {
+      state.bgImageFile = normalizeMediaPath(p('bg_image_file'));
+      bgChanged = true;
+    }
+    if (props.bg_video_file !== undefined) {
+      state.bgVideoFile = normalizeMediaPath(p('bg_video_file'));
+      bgChanged = true;
+    }
+    if (props.bg_fit_mode !== undefined) {
+      state.bgFitMode = normalizeFitMode(p('bg_fit_mode'));
+      applyBackgroundFitMode();
+    }
+
+    if (bgChanged) {
+      setBackground(resolveBackgroundSource());
     }
 
     if (props.effect_mode !== undefined) {
@@ -572,8 +662,20 @@
     if (props.rm_trail_enable !== undefined) state.rm.trailEnabled = toBool(p('rm_trail_enable'), state.rm.trailEnabled);
     if (props.rm_trail_strength !== undefined) state.rm.trailStrength = clamp(toNumber(p('rm_trail_strength'), state.rm.trailStrength), 0, 1);
     if (props.rm_trail_lag !== undefined) state.rm.trailLag = clamp(toNumber(p('rm_trail_lag'), state.rm.trailLag), 0.04, 0.6);
+    if (props.rm_fit_mode !== undefined) state.rm.fitMode = normalizeFitMode(p('rm_fit_mode'));
     if (props.rm_images !== undefined) {
-      state.rm.images = parseMediaList(p('rm_images'));
+      state.rm.textImages = parseMediaList(p('rm_images')).map(normalizeMediaPath);
+      rmSourceChanged = true;
+    }
+    for (let i = 1; i <= RM_FILE_SLOT_COUNT; i += 1) {
+      const key = `rm_image_${i}`;
+      if (props[key] !== undefined) {
+        state.rm.fileSlots[i - 1] = normalizeMediaPath(p(key));
+        rmSourceChanged = true;
+      }
+    }
+    if (rmSourceChanged) {
+      rebuildRmSourceList();
       state.rm.currentImageIndex = 0;
       runtime.rmTargetImageIndex = 0;
       runtime.rmLastTurn = 0;
@@ -584,7 +686,21 @@
 
     if (props.sl_max_layers !== undefined) state.sl.maxLayers = clamp(toNumber(p('sl_max_layers'), state.sl.maxLayers), 1, MAX_LAYERS_HARD_LIMIT);
     if (props.sl_transition_ms !== undefined) state.sl.transitionMs = clamp(toNumber(p('sl_transition_ms'), state.sl.transitionMs), 120, 2000);
-    if (props.sl_images !== undefined) state.sl.images = parseMediaList(p('sl_images'));
+    if (props.sl_fit_mode !== undefined) state.sl.fitMode = normalizeFitMode(p('sl_fit_mode'));
+    if (props.sl_images !== undefined) {
+      state.sl.textImages = parseMediaList(p('sl_images')).map(normalizeMediaPath);
+      slSourceChanged = true;
+    }
+    for (let i = 1; i <= SL_FILE_SLOT_COUNT; i += 1) {
+      const key = `sl_image_${i}`;
+      if (props[key] !== undefined) {
+        state.sl.fileSlots[i - 1] = normalizeMediaPath(p(key));
+        slSourceChanged = true;
+      }
+    }
+    if (slSourceChanged) {
+      rebuildSlSourceList();
+    }
     if (props.sl_reset !== undefined && toBool(p('sl_reset'), false)) state.sl.currentLayer = 1;
 
     if (props.cross_enable !== undefined) state.cross.enabled = toBool(p('cross_enable'), state.cross.enabled);
@@ -759,6 +875,11 @@
   }
 
   function bootDefaults() {
+    rebuildRmSourceList();
+    rebuildSlSourceList();
+
+    applyBackgroundFitMode();
+
     applyModeVisibility();
     syncLuoshengStatics();
     updateLuoshengMedia();
@@ -766,7 +887,7 @@
     updateSenluoLayout();
     syncCrosshairStatics();
 
-    setBackground('');
+    setBackground(resolveBackgroundSource());
 
     preloadImage(state.rm.images[0]);
     updateLuoshengPreloadProgress();

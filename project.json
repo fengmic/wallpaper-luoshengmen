@@ -10,9 +10,35 @@
     "properties": {
       "bg_media": {
         "order": 10,
-        "text": "背景媒体路径 (webm/png/jpg/gif)",
-        "type": "text",
+        "text": "背景媒体手动路径（可选）",
+        "type": "textinput",
+        "value": "touxiang.jpg"
+      },
+      "bg_image_file": {
+        "order": 11,
+        "text": "背景图片导入",
+        "type": "file",
+        "filetype": "image",
         "value": ""
+      },
+      "bg_video_file": {
+        "order": 12,
+        "text": "背景视频导入",
+        "type": "file",
+        "filetype": "video",
+        "value": ""
+      },
+      "bg_fit_mode": {
+        "order": 13,
+        "text": "背景填充方式",
+        "type": "combo",
+        "value": "contain",
+        "options": [
+          { "label": "默认", "value": "default" },
+          { "label": "填充", "value": "fill" },
+          { "label": "适应", "value": "contain" },
+          { "label": "拉伸", "value": "stretch" }
+        ]
       },
 
       "effect_mode": {
@@ -29,9 +55,31 @@
 
       "rm_images": {
         "order": 30,
-        "text": "罗生门图片列表 (用逗号/分号/换行分隔)",
-        "type": "text",
-        "value": ""
+        "text": "罗生门图片列表（文本模式，逗号分隔）",
+        "type": "textinput",
+        "value": "gaka.webp"
+      },
+      "rm_image_1": { "order": 30.1, "text": "罗生门导入图片 1", "type": "file", "filetype": "image", "value": "" },
+      "rm_image_2": { "order": 30.2, "text": "罗生门导入图片 2", "type": "file", "filetype": "image", "value": "" },
+      "rm_image_3": { "order": 30.3, "text": "罗生门导入图片 3", "type": "file", "filetype": "image", "value": "" },
+      "rm_image_4": { "order": 30.4, "text": "罗生门导入图片 4", "type": "file", "filetype": "image", "value": "" },
+      "rm_image_5": { "order": 30.5, "text": "罗生门导入图片 5", "type": "file", "filetype": "image", "value": "" },
+      "rm_image_6": { "order": 30.6, "text": "罗生门导入图片 6", "type": "file", "filetype": "image", "value": "" },
+      "rm_image_7": { "order": 30.7, "text": "罗生门导入图片 7", "type": "file", "filetype": "image", "value": "" },
+      "rm_image_8": { "order": 30.8, "text": "罗生门导入图片 8", "type": "file", "filetype": "image", "value": "" },
+      "rm_image_9": { "order": 30.9, "text": "罗生门导入图片 9", "type": "file", "filetype": "image", "value": "" },
+      "rm_image_10": { "order": 30.95, "text": "罗生门导入图片 10", "type": "file", "filetype": "image", "value": "" },
+      "rm_fit_mode": {
+        "order": 30.99,
+        "text": "罗生门图片填充方式",
+        "type": "combo",
+        "value": "contain",
+        "options": [
+          { "label": "默认", "value": "default" },
+          { "label": "填充", "value": "fill" },
+          { "label": "适应", "value": "contain" },
+          { "label": "拉伸", "value": "stretch" }
+        ]
       },
       "rm_pos_x": {
         "order": 31,
@@ -159,9 +207,31 @@
 
       "sl_images": {
         "order": 50,
-        "text": "森罗门层级图片列表 (第一层,第二层...)",
-        "type": "text",
+        "text": "森罗门图片列表（文本模式，逗号分隔）",
+        "type": "textinput",
         "value": ""
+      },
+      "sl_image_1": { "order": 50.1, "text": "森罗门导入图片 1", "type": "file", "filetype": "image", "value": "" },
+      "sl_image_2": { "order": 50.2, "text": "森罗门导入图片 2", "type": "file", "filetype": "image", "value": "" },
+      "sl_image_3": { "order": 50.3, "text": "森罗门导入图片 3", "type": "file", "filetype": "image", "value": "" },
+      "sl_image_4": { "order": 50.4, "text": "森罗门导入图片 4", "type": "file", "filetype": "image", "value": "" },
+      "sl_image_5": { "order": 50.5, "text": "森罗门导入图片 5", "type": "file", "filetype": "image", "value": "" },
+      "sl_image_6": { "order": 50.6, "text": "森罗门导入图片 6", "type": "file", "filetype": "image", "value": "" },
+      "sl_image_7": { "order": 50.7, "text": "森罗门导入图片 7", "type": "file", "filetype": "image", "value": "" },
+      "sl_image_8": { "order": 50.8, "text": "森罗门导入图片 8", "type": "file", "filetype": "image", "value": "" },
+      "sl_image_9": { "order": 50.9, "text": "森罗门导入图片 9", "type": "file", "filetype": "image", "value": "" },
+      "sl_image_10": { "order": 50.95, "text": "森罗门导入图片 10", "type": "file", "filetype": "image", "value": "" },
+      "sl_fit_mode": {
+        "order": 50.99,
+        "text": "森罗门图片填充方式",
+        "type": "combo",
+        "value": "contain",
+        "options": [
+          { "label": "默认", "value": "default" },
+          { "label": "填充", "value": "fill" },
+          { "label": "适应", "value": "contain" },
+          { "label": "拉伸", "value": "stretch" }
+        ]
       },
       "sl_max_layers": {
         "order": 51,
